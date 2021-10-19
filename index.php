@@ -107,8 +107,8 @@ if (isset($_POST["search-btn"])) {
                     </div>
                     <a class="text-dark blog-card" href="blog.php?id=<?php echo $blog["id"]; ?>">
                         <div class="card-img-top shadow-none">
-                            <img src="./blog_uploads/<?php echo $blog["blog_img"] ?>" class="img-responsive w-100"
-                                alt="">
+                            <img style="object-fit: cover" src="./blog_uploads/<?php echo $blog["blog_img"] ?>"
+                                class="img-responsive w-100" alt="">
                         </div>
                         <h3 class="font-weight-bold mt-3"><?php echo $blog["blog_title"] ?></h3>
                         <small class="mt-2 text-muted"><?php
