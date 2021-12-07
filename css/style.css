@@ -20,12 +20,10 @@ body {
 .back-link {
   color: #777;
   font-size: 18px;
-  font-weight: 700;
 }
 
 .title {
   width: 100%;
-  font-weight: 700;
 }
 
 .details {
@@ -65,6 +63,10 @@ img {
 
 .fa-ellipsis-h:before {
   content: "\f141";
+}
+
+.fa-user-ninja:before {
+  content: "\f504";
 }
 
 @font-face {
@@ -111,4 +113,18 @@ img {
 
 .fa-search:before {
   content: "\f002";
+}
+
+.fa-bars:before {
+  content: "\f0c9";
+}
+
+.fa-edit:before {
+  content: "\f044";
+  font-size: 20px;
+}
+
+.fa-paper-plane:before {
+  content: "\f1d8";
+  font-size: 20px;
 }

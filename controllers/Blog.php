@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     header("Location: index.php");
 }
 
-$id = $_GET['id'];
-$query_structure = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE id != '$id' ORDER BY created_at LIMIT 3";
+$id = mysqli_real_escape_string($conn, $_GET['id']);
+$query_structure = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE id != '$id' AND deleted = 0 ORDER BY created_at LIMIT 3";
 $send_query = $conn->query($query_structure);
 $recent_blogs = mysqli_fetch_all($send_query, MYSQLI_ASSOC);

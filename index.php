@@ -1,18 +1,14 @@
 <?php
-session_start();
-if (!isset($_SESSION["username"])) {
-    header('Location: auth/login.php');
-}
 $keyword_query = "";
 include "./config/db_connect.php";
-$query_structure = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs";
+$query_structure = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE deleted = 0";
 $response = $conn->query($query_structure);
 $allBlogs = mysqli_fetch_all($response, MYSQLI_ASSOC);
 
 if (isset($_POST["search-btn"])) {
     $keywords = mysqli_real_escape_string($conn, $_POST["keywords"]);
     $keyword_query = $keywords;
-    $sql = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE author LIKE '%$keywords%' OR blog_title LIKE '%$keywords%' OR blog_content LIKE '%$keywords%'";
+    $sql = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE deleted = 0 AND author LIKE '%$keywords%' OR deleted = 0 AND blog_title LIKE '%$keywords%' OR deleted = 0 AND blog_content LIKE '%$keywords%'";
     $response = $conn->query($sql);
     $allBlogs = mysqli_fetch_all($response, MYSQLI_ASSOC);
 }
@@ -33,45 +29,60 @@ if (isset($_POST["search-btn"])) {
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar sticky-top navbar-expand-lg bg-dark p-3 navbar-dark shadow-none">
+    <nav class="navbar sticky-top navbar-expand-lg bg-dark p-2 navbar-dark shadow-none">
 
-        <a class="navbar-brand font-weight-bold ml-5" href="index.php">
+        <a class="navbar-brand font-weight-bold ml-3" href="index.php">
             HeyPresh
         </a>
 
         <!-- Collapse button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav1"
             aria-controls="basicExampleNav1" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa fa-align-left"></i>
+            <i class="fa fa-bars"></i>
         </button>
 
-        <!-- Left -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle font-weight-bold" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    <img style="object-fit: cover" width="50" height="50" class="rounded-circle ml-5 img-responsive"
-                        src="auth/profile_uploads/<?php echo $_SESSION['img_path']; ?>" alt="">
-                    Welcome, <?php echo $_SESSION["username"]; ?>
-                </a>
-                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="logout.php?logout=true">Logout</a>
-                </div>
-            </li>
-
-            <div class="nav-item">
-                <div class="nav-link mt-2 ml-3" style="cursor: pointer">
-                    <a href="./create.php">
-                        <img src="./img/new.png" alt="create blog">
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="basicExampleNav1">
+            <!-- Left -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" style="display: <?php if (!isset($_COOKIE['username'])) {echo 'none';}?>">
+                    <div class="nav-link mt-3" style="cursor: pointer">
+                        <a class="font-weight-bold text-white" href="./create.php">
+                            <img src="./img/new.png" alt="create blog">
+                            Create blog
+                        </a>
+                    </div>
+                </li>
+                <!-- Dropdown -->
+                <li class="nav-item dropdown" style="display: <?php if (!isset($_COOKIE['username'])) {echo 'none';}?>">
+                    <a class="nav-link dropdown-toggle font-weight-bold" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img style="object-fit: cover" width="50" height="50" class="rounded-circle img-responsive"
+                            src="auth/profile_uploads/<?php echo $_COOKIE['img_path']; ?>" alt="">
+                        Welcome, <?php echo $_COOKIE["username"]; ?>
                     </a>
-                </div>
-            </div>
-        </ul>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="logout.php?logout=true">Logout</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown" style="display: <?php if (isset($_COOKIE['username'])) {echo 'none';}?>">
+                    <a class="nav-link dropdown-toggle font-weight-bold" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user-ninja"></i>
+                        Account
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="./auth/login.php">Login</a>
+                        <a class="dropdown-item" href="./auth/signup.php">Sign Up</a>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
     </nav>
     <!-- Navbar -->
 
-    <div class="container">
+    <div class="container shadow mt-4 rounded p-3" style="background-color: #e5e5ea">
         <div class="row">
             <div class="col-lg-4">
                 <h1 class="font-weight-bold mt-3" style="font-size: 5rem">Blogs</h1>
@@ -98,25 +109,55 @@ if (isset($_POST["search-btn"])) {
 
         <div class="row">
             <?php foreach ($allBlogs as $blog): ?>
-            <div class="col-lg-4 col-md-6">
-                <div class="card shadow-none">
-                    <div class="profile-img mb-2">
-                        <img style="object-fit: cover" src="./auth/profile_uploads/<?php echo $blog["profile_img"] ?>"
-                            class="img-responsive rounded-circle" width="50" height="50" alt="">
-                        <small class="ml-2 font-weight-bold"><?php echo $blog["author"] ?></small>
-                    </div>
-                    <a class="text-dark blog-card" href="blog.php?id=<?php echo $blog["id"]; ?>">
-                        <div class="card-img-top shadow-none">
-                            <img style="object-fit: cover" src="./blog_uploads/<?php echo $blog["blog_img"] ?>"
-                                class="img-responsive w-100" alt="">
+            <div class="col-lg-4 mb-4 col-md-6">
+                <div class="card bg-light rounded">
+                    <div class="card-body">
+
+                        <div class="profile-img" style="position: relative">
+                            <div class="profile-img mb-4" style="float: left;">
+                                <img style="object-fit: cover"
+                                    src="./auth/profile_uploads/<?php echo $blog["profile_img"] ?>"
+                                    class="img-responsive rounded-circle" width="50" height="50" alt="">
+                                <small class="ml-2 font-weight-bold"><?php echo $blog["author"] ?></small>
+                            </div>
                         </div>
-                        <h3 class="font-weight-bold mt-3"><?php echo $blog["blog_title"] ?></h3>
-                        <small class="mt-2 text-muted"><?php
+                        <a class="text-dark blog-card pt-3" href="blog.php?id=<?php echo $blog["id"]; ?>">
+                            <div class="card-img-top shadow-none">
+                                <div class="hover-zoom">
+                                    <img style="object-fit: cover; height: 15rem"
+                                        src="./blog_uploads/<?php echo $blog["blog_img"] ?>"
+                                        class="img-responsive rounded w-100" alt="">
+                                </div>
+                            </div>
+                            <h3 class="font-weight-bold text-truncate card-title mt-3"
+                                title="<?php echo $blog["blog_title"]; ?>"><?php echo $blog["blog_title"] ?>
+                            </h3>
+
+                            <div class="card-icons mt-3 mr-2" style="position: relative;">
+                                <div class="icons" style="float: left;">
+                                    <a style="display: <?php if (isset($_COOKIE["username"]) && $blog['author'] == $_COOKIE['username']) {echo 'initial';} else {echo 'none';}?>"
+                                        href="./update.php?id=<?php echo $blog['id']; ?>" class="text-muted">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <textarea class="d-none" id="blogId<?php echo $blog['id']; ?>"></textarea>
+                                    <button class="btn btn-md p-0 shadow-none" style="color: #707070"
+                                        onclick="handleCopy(<?php echo $blog['id']; ?>)" title="Copy link to clipboard">
+                                        <i class="fa fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                                <div class="date" style="float: right;">
+
+                                    <small class="mt-2 text-muted">
+                                        <?php
 $format = "M d, Y";
 $created_at = new DateTime($blog["created_at"]);
 echo date_format($created_at, $format);
-?></small>
-                    </a>
+?>
+                                    </small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
             <?php endforeach;?>
@@ -126,7 +167,16 @@ echo date_format($created_at, $format);
     <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/popper.min.js"></script>
-    <script src="./js/script.js"></script>
+    <script>
+    const handleCopy = (blog_id) => {
+        const input = document.getElementById(`blogId${blog_id}`);
+        const url = `${location.origin}/heypresh/blog.php?id=${blog_id}`;
+
+        input.innerHTML = url;
+        input.select();
+        document.execCommand("copy");
+    }
+    </script>
 </body>
 
 </html>

@@ -1,7 +1,6 @@
 <?php
 include '../config/db_connect.php';
 $invalid = "";
-session_start();
 $username = $password = '';
 $errors = array('username' => '', 'password' => '');
 
@@ -47,9 +46,10 @@ if (isset($_POST['signin'])) {
             $passwordHash = $userData[0]['password'];
 
             $unhashedPassword = password_verify($password, $passwordHash);
+            $img_name = $userData[0]['img_path'];
             if ($unhashedPassword) {
-                $_SESSION['username'] = $userData[0]['username'];
-                $_SESSION['img_path'] = $userData[0]['img_path'];
+                setcookie("username", $username, time() + 86400, "/");
+                setcookie("img_path", $img_name, time() + 86400, "/");
                 header('Location: ../index.php');
             } else {
                 $invalid = "Wrong password";

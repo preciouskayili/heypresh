@@ -1,8 +1,7 @@
 <?php
-
+session_start();
 include "../config/db_connect.php";
 $invalidImage = "";
-session_start();
 
 $username = "";
 $password = "";
@@ -57,8 +56,9 @@ if (isset($_POST['signup'])) {
     if (array_filter($errors)) {
         // echo: errors in the form
     } else {
-        $sql = "SELECT * FROM `admin` WHERE username = '$username'";
+        $sql = "SELECT * FROM `admin` WHERE username = '$username' OR email = '$email'";
         $result = $conn->query($sql);
+        $userData = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         $num_rows = mysqli_num_rows($result);
         if ($num_rows == 0) {
@@ -67,8 +67,8 @@ if (isset($_POST['signup'])) {
                 move_uploaded_file($_FILES['upload_image']['tmp_name'], $completePath);
                 $sql = "INSERT INTO `admin` (img_path,username,email,`password`) VALUES('$completeName', '$username','$email', '$hashedPassword')";
                 if ($conn->query($sql)) {
-                    $_SESSION['username'] = $userData[0]['username'];
-                    $_SESSION['img_path'] = $userData[0]['img_path'];
+                    setcookie("username", $username, time() + 86400, "/");
+                    setcookie("img_path", $completeName, time() + 86400, "/");
                     header("Location: ../index.php");
                 } else {
                     // Do not redirect
@@ -78,7 +78,7 @@ if (isset($_POST['signup'])) {
                 $uploadOk = 0;
             }
         } else {
-            $errors['username'] = "Username already exists";
+            $errors['username'] = "Username or email already exists";
         }
     }
 }

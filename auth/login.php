@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php session_start();?>
 <?php include "./middleware/Login.php";?>
 
 <head>
@@ -11,15 +12,12 @@
 </head>
 
 <style>
-html,
-body {
-    height: 100%;
-}
-
-body {
+.color {
+    height: 40vh;
+    background-color: #4285f4;
     display: flex;
+    justify-content: center;
     align-items: center;
-    /* vertical center */
 }
 </style>
 
@@ -37,48 +35,62 @@ const showPassword = () => {
 </script>
 
 <body>
-    <div class="container-fluid">
-        <form action="login.php" method="post" class="flex-center" style="flex-direction: column;">
-            <h3 class="font-weight-bold mb-4">HeyPresh</h3>
-            <small class="text-danger font-weight-bold">
-                <?php echo $invalid; ?>
-            </small>
-            <div class="col-lg-4 col-md-5">
-                <div class="md-form md-outline m-0 mb-4">
-                    <input name="username" type="text" id="form1" value="<?php echo $username; ?>" class="form-control"
-                        autocomplete="off" />
-                    <label class="form-label" for="form1">Username</label>
+    <div class="color py-auto text-white my-auto text-center">
+        <div class="d-block">
+            <h1 class="font-weight-bold text-center title">Login</h1>
+            <p class="text-center font-weight-bold">HeyPresh</p>
+        </div>
+    </div>
+    <div class="container-fluid mx-auto" style="margin-top: -2rem;">
+        <div class="col-lg-5 col-md-7 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="login.php" method="post">
+                        <small class="text-danger font-weight-bold">
+                            <?php echo $invalid; ?>
+                        </small>
+                        <div class="col-12 mt-3">
+                            <div class="md-form md-outline m-0 mb-4">
+                                <input name="username" type="text" id="form1" value="<?php echo $username; ?>"
+                                    class="form-control border-2" autocomplete="off" />
+                                <label class="form-label" for="form1">Username</label>
 
-                    <small class="text-warning font-weight-bold">
-                        <?php echo $errors["username"]; ?>
-                    </small>
+                                <small class="text-warning font-weight-bold">
+                                    <?php echo $errors["username"]; ?>
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="md-form md-outline m-0 mb-4">
+                                <input name="password" type="password" id="password" class="form-control"
+                                    autocomplete="off" />
+                                <label class="form-label" for="password">Password</label>
+
+                                <small class="text-warning font-weight-bold">
+                                    <?php echo $errors["password"]; ?>
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-check mt-2 mb-2">
+                                <input class="form-check-input" type="checkbox" id="flexCheckChecked"
+                                    onclick="showPassword()" />
+                                <label class="form-check-label" style="color: #777" for="flexCheckChecked">
+                                    Show Password
+                                </label>
+                            </div>
+                            <button name="signin" class="col-md-12 btn btn-warning"
+                                style="margin-left: -0.05rem;">Login</button>
+                            <div class="sign-up-link mt-3 text-muted">
+                                <span>Not yet a member? </span><a href="signup.php">Sign up</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="col-lg-4 col-md-5">
-                <div class="md-form md-outline m-0 mb-4">
-                    <input name="password" type="password" id="password" class="form-control" autocomplete="off" />
-                    <label class="form-label" for="password">Password</label>
-
-                    <small class="text-warning font-weight-bold">
-                        <?php echo $errors["password"]; ?>
-                    </small>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-5">
-                <div class="form-check mt-2 mb-2">
-                    <input class="form-check-input" type="checkbox" id="flexCheckChecked" onclick="showPassword()" />
-                    <label class="form-check-label" style="color: #777" for="flexCheckChecked">
-                        Show Password
-                    </label>
-                </div>
-                <button name="signin" class="col-md-12 btn btn-warning" style="margin-left: -0.05rem;">Login</button>
-                <div class="sign-up-link mt-3 text-muted">
-                    <span>Not yet a member? </span><a href="signup.php">Sign up</a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
     <script type="text/javascript" src="../js/jquery.min.js"></script>
