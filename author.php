@@ -81,84 +81,30 @@ if (isset($_POST["search-btn"])) {
 	</nav>
 	<!-- Navbar -->
 
-	<div class="container shadow mt-4 rounded p-3" style="background-color: #e5e5ea">
-		<div class="row">
-			<div class="col-md-12 my-auto">
-				<form action="index.php" method="POST" class="search m-0">
-					<div class="md-form md-outline m-0 w-100 input-group">
-						<input name="keywords" required placeholder="Search" value="<?php echo $keyword_query; ?>"
-							autocomplete="off" type="text" id="form77"
-							style="background-color: rgba(201, 201, 201, 0.5); border: none;" class="form-control m-0">
-						<button name="search-btn" class="btn btn-md btn-dark">
-							<i class="fa fa-search"></i>
-						</button>
-					</div>
-				</form>
-			</div>
-
-		</div>
-	</div>
-
 
 	<div class="container mt-5">
-		<div class="col-lg-4">
-			<h1 class="text-dark fw-bold mt-3" style="font-size: 5rem">Blogs</h1>
+		<div class="col-lg-12 mb-5">
+			<h1 class="text-dark fw-bold mt-3" style="font-size: 5rem">Precious Kayili</h1>
 		</div>
 		<?php if (empty($allBlogs)): include "./emptyResult.php";endif;?>
 
-		<div class="row">
-			<?php foreach ($allBlogs as $blog): ?>
-			<div class="col-lg-4 mb-4 col-md-6">
-				<div class="card bg-light rounded">
-					<div class="card-body">
-
-						<div class="profile-img" style="position: relative">
-							<div class="profile-img mb-4" style="float: left;">
-								<img style="object-fit: cover" src="./auth/profile_uploads/<?php echo $blog["profile_img"] ?>"
-									class="img-responsive rounded-circle" width="50" height="50" alt="">
-								<small class="ms-2 font-weight-bold"><?php echo $blog["author"] ?></small>
-							</div>
-						</div>
-						<a class="text-dark blog-card pt-3" href="blog.php?id=<?php echo $blog["id"]; ?>">
-							<div class="card-img-top shadow-none">
-								<div class="hover-zoom">
-									<img style="object-fit: cover; height: 15rem" src="./blog_uploads/<?php echo $blog["blog_img"] ?>"
-										class="img-responsive rounded w-100" alt="">
-								</div>
-							</div>
-							<h3 class="font-weight-bold text-truncate card-title mt-3" title="<?php echo $blog["blog_title"]; ?>">
-								<?php echo $blog["blog_title"] ?>
-							</h3>
-
-							<div class="card-icons mt-3 mr-2" style="position: relative;">
-								<div class="icons" style="float: left;">
-									<a style="display: <?php if (isset($_COOKIE["username"]) && $blog['author'] == $_COOKIE['username']) {echo 'initial';} else {echo 'none';}?>"
-										href="./update.php?id=<?php echo $blog['id']; ?>" class="text-muted">
-										<i class="fa fa-edit"></i>
-									</a>
-									<textarea class="d-none" id="blogId<?php echo $blog['id']; ?>"></textarea>
-									<button class="btn btn-md p-0 shadow-none" style="color: #707070"
-										onclick="handleCopy(<?php echo $blog['id']; ?>)" title="Copy link to clipboard">
-										<i class="fa fa-paper-plane"></i>
-									</button>
-								</div>
-								<div class="date" style="float: right;">
-
-									<small class="mt-2 text-muted">
-										<?php
-$format = "M d, Y";
-$created_at = new DateTime($blog["created_at"]);
-echo date_format($created_at, $format);
-?>
-									</small>
-								</div>
-							</div>
-						</a>
-					</div>
+		<?php foreach ($allBlogs as $blog): ?>
+		<div class="row mb-4">
+			<div class="col-md-4">
+				<div class="hover-zoom">
+					<img style="object-fit: cover; height: 15rem" src="./blog_uploads/<?php echo $blog['blog_img'] ?>"
+						class="w-100" alt="Recent article">
 				</div>
 			</div>
-			<?php endforeach;?>
+			<div class="col-md-8">
+				<div class="card-body">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto qui nesciunt harum expedita pariatur
+						aliquid nobis atque in suscipit sed! Amet, minus tempora odit ea culpa praesentium sint architecto soluta.
+					</p>
+				</div>
+			</div>
 		</div>
+		<?php endforeach;?>
 	</div>
 
 	<script src="./js/jquery.min.js"></script>

@@ -8,6 +8,8 @@ if (isset($_GET["delete"])) {
         $query = "UPDATE blogs SET deleted = 1 WHERE id = '$blogModel' AND author = '$username'";
         if ($conn->query($query)) {
             header('Location: ../index.php');
+        } else {
+            header('Location: ../401.php')
         }
     } else {
         header('Location: ../401.php');
