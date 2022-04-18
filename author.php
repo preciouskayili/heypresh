@@ -6,8 +6,6 @@ if (isset($_GET["author"])) {
     $query_structure = "SELECT id, blog_img, blog_content, blog_title, profile_img, author, created_at FROM blogs WHERE deleted = 0 AND author='$author'";
     $response = $conn->query($query_structure);
     $allBlogs = mysqli_fetch_all($response, MYSQLI_ASSOC);
-
-    $sql = "SELECT * FROM ";
 } else {
     header('Location: index.php');
 }
@@ -45,7 +43,7 @@ if (isset($_GET["author"])) {
 			<!-- Left -->
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item" style="display: <?php if (!isset($_COOKIE['username'])) {echo 'none';}?>">
-					<div class="nav-link mt-3" style="cursor: pointer">
+					<div class="nav-link mt-1" style="cursor: pointer">
 						<a class="font-weight-bold text-white" href="./create.php">
 							<img src="./img/new.png" alt="create blog">
 							Create blog
@@ -56,7 +54,7 @@ if (isset($_GET["author"])) {
 				<li class="nav-item dropdown" style="display: <?php if (!isset($_COOKIE['username'])) {echo 'none';}?>">
 					<a class="nav-link dropdown-toggle font-weight-bold" id="navbarDropdownMenuLink" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false">
-						<img style="object-fit: cover" width="50" height="50" class="rounded-circle img-responsive"
+						<img style="object-fit: cover" width="35" height="35" class="rounded-circle img-responsive"
 							src="auth/profile_uploads/<?php echo $_COOKIE['img_path']; ?>" alt="">
 						Welcome, <?php echo $_COOKIE["username"]; ?>
 					</a>
@@ -83,7 +81,7 @@ if (isset($_GET["author"])) {
 
 
 	<div class="container mt-5">
-		<div class="col-lg-12 mb-5 d-flex" style="align-items: center; justify-content: center">
+		<div class="col-lg-12 mb-5 d-flex" style="align-items: center; justify-content: center;">
 			<div class="profile-img" style="position: relative">
 				<div class="profile-img mb-4" style="float: left; align-items: center;">
 					<img style="object-fit: cover" src="./auth/profile_uploads/<?php echo $allBlogs[0]["profile_img"] ?>"
@@ -91,7 +89,15 @@ if (isset($_GET["author"])) {
 						alt="">
 				</div>
 			</div>
-			<h1 class="text-dark fw-bold" style="font-size: 5rem"><?php echo $author; ?></h1>
+			<div style="flex-direction: column">
+				<h1 class="text-dark fw-bold" style="font-size: 5rem"><?php echo $author; ?></h1>
+				<h2 class="text-dark fw-bold"><?php
+if (count($allBlogs) > 1) {
+    echo count($allBlogs) . " Blogs";
+} else {
+    echo count($allBlogs) . " Blog";
+}?> </h2>
+			</div>
 		</div>
 		<?php if (empty($allBlogs)): include "./emptyResult.php";endif;?>
 
@@ -109,11 +115,13 @@ if (isset($_GET["author"])) {
 						<h1 class="fw-bold text-dark"><?php echo $blog["blog_title"]; ?></h1>
 					</a>
 					<p style="overflow: hidden;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   -webkit-line-clamp: 4; /* number of lines to show */
-           line-clamp: 4;
-   -webkit-box-orient: vertical;"><?php echo $blog["blog_content"] ?></p>
+							text-overflow: ellipsis;
+							display: -webkit-box;
+							-webkit-line-clamp: 4;
+							line-clamp: 4;
+							-webkit-box-orient: vertical;">
+						<?php echo $blog["blog_content"] ?>
+					</p>
 					<span class="badge badge-primary"><?php
 $format = "M d, Y";
 $created_at = new DateTime($blog["created_at"]);
@@ -128,6 +136,8 @@ echo date_format($created_at, $format);
 	<script src="./js/jquery.min.js"></script>
 	<script src="./js/bootstrap.min.js"></script>
 	<script src="./js/popper.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<script>
 	const handleCopy = (blog_id) => {
 		const input = document.querySelector(`.d-none#blogId${blog_id}`);
@@ -137,8 +147,22 @@ echo date_format($created_at, $format);
 		input.classList.remove("d-none");
 		input.innerHTML = url;
 		input.select();
-		document.execCommand("copy");
-		input.classList.add("d-none");
+		if (document.execCommand("copy")) {
+			Swal.fire({
+				icon: 'success',
+				title: 'Your work has been saved',
+				showConfirmButton: false,
+				timer: 1500
+			})
+			input.classList.add("d-none");
+		} else {
+			Swal.fire({
+				title: "Good job!",
+				text: "You clicked the button!",
+				icon: "error",
+				button: "Aww yiss!",
+			});
+		}
 	}
 	</script>
 </body>
