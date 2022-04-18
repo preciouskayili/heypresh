@@ -114,9 +114,11 @@ if (isset($_POST["search-btn"])) {
 
 						<div class="profile-img" style="position: relative">
 							<div class="profile-img mb-4" style="float: left;">
-								<img style="object-fit: cover" src="./auth/profile_uploads/<?php echo $blog["profile_img"] ?>"
-									class="img-responsive rounded-circle" width="50" height="50" alt="">
-								<small class="ms-2 font-weight-bold"><?php echo $blog["author"] ?></small>
+								<a href="author.php?author=<?php echo $blog["author"] ?>">
+									<img style="object-fit: cover" src="./auth/profile_uploads/<?php echo $blog["profile_img"] ?>"
+										class="img-responsive rounded-circle" width="50" height="50" alt="">
+									<small class="ms-2 font-weight-bold text-dark"><?php echo $blog["author"] ?></small>
+								</a>
 							</div>
 						</div>
 						<a class="text-dark blog-card pt-3" href="blog.php?id=<?php echo $blog["id"]; ?>">

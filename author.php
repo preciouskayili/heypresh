@@ -1,17 +1,17 @@
 <?php
-$keyword_query = "";
 include "./config/db_connect.php";
-$query_structure = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE deleted = 0";
-$response = $conn->query($query_structure);
-$allBlogs = mysqli_fetch_all($response, MYSQLI_ASSOC);
 
-if (isset($_POST["search-btn"])) {
-    $keywords = mysqli_real_escape_string($conn, $_POST["keywords"]);
-    $keyword_query = $keywords;
-    $sql = "SELECT id, blog_img, blog_title, profile_img, author, created_at FROM blogs WHERE deleted = 0 AND author LIKE '%$keywords%' OR deleted = 0 AND blog_title LIKE '%$keywords%' OR deleted = 0 AND blog_content LIKE '%$keywords%'";
-    $response = $conn->query($sql);
+if (isset($_GET["author"])) {
+    $author = mysqli_real_escape_string($conn, $_GET['author']);
+    $query_structure = "SELECT id, blog_img, blog_content, blog_title, profile_img, author, created_at FROM blogs WHERE deleted = 0 AND author='$author'";
+    $response = $conn->query($query_structure);
     $allBlogs = mysqli_fetch_all($response, MYSQLI_ASSOC);
+
+    $sql = "SELECT * FROM ";
+} else {
+    header('Location: index.php');
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,8 +83,15 @@ if (isset($_POST["search-btn"])) {
 
 
 	<div class="container mt-5">
-		<div class="col-lg-12 mb-5">
-			<h1 class="text-dark fw-bold mt-3" style="font-size: 5rem">Precious Kayili</h1>
+		<div class="col-lg-12 mb-5 d-flex" style="align-items: center; justify-content: center">
+			<div class="profile-img" style="position: relative">
+				<div class="profile-img mb-4" style="float: left; align-items: center;">
+					<img style="object-fit: cover" src="./auth/profile_uploads/<?php echo $allBlogs[0]["profile_img"] ?>"
+						class="img-responsive rounded-circle mt-2 me-3" width="75" style="justify-content: center" height="75"
+						alt="">
+				</div>
+			</div>
+			<h1 class="text-dark fw-bold" style="font-size: 5rem"><?php echo $author; ?></h1>
 		</div>
 		<?php if (empty($allBlogs)): include "./emptyResult.php";endif;?>
 
@@ -98,9 +105,20 @@ if (isset($_POST["search-btn"])) {
 			</div>
 			<div class="col-md-8">
 				<div class="card-body">
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto qui nesciunt harum expedita pariatur
-						aliquid nobis atque in suscipit sed! Amet, minus tempora odit ea culpa praesentium sint architecto soluta.
-					</p>
+					<a href="blog.php?id=<?php echo $blog["id"]; ?>">
+						<h1 class="fw-bold text-dark"><?php echo $blog["blog_title"]; ?></h1>
+					</a>
+					<p style="overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 4; /* number of lines to show */
+           line-clamp: 4;
+   -webkit-box-orient: vertical;"><?php echo $blog["blog_content"] ?></p>
+					<span class="badge badge-primary"><?php
+$format = "M d, Y";
+$created_at = new DateTime($blog["created_at"]);
+echo date_format($created_at, $format);
+?></span>
 				</div>
 			</div>
 		</div>
