@@ -29,15 +29,8 @@ setlocale(LC_ALL, "US");
 					<i class="fas fa-arrow-left me-2"></i>
 					Go Back</a>
 				<!-- href="./controllers/DeleteBlog.php?delete=<?php echo $blogPost[0]['id']; ?>" -->
-				<button onclick="Swal.fire({
-				icon: 'error',
-				title: 'Are you sure you want to delete this blog',
-				showDenyButton: true,
-				denyButtonText: 'Cancel',
-				showCloseButton: true,
-				confirmButtonText: 'Yes',
-				showLoaderOnConfirm: false,
-			})" style="display: <?php if (isset($_COOKIE["username"]) && $blogPost[0]['author'] == $_COOKIE['username']) {echo 'initial';} else {echo 'none';}?>; float: right; background-color: #e00202; border-radius: 0.50rem"
+				<button onclick="handleDelete()"
+					style="display: <?php if (isset($_COOKIE["username"]) && $blogPost[0]['author'] == $_COOKIE['username']) {echo 'initial';} else {echo 'none';}?>; float: right; background-color: #e00202; border-radius: 0.50rem"
 					class="btn shadow-none text-white btn-md back-link">
 					Delete</button>
 			</div>
@@ -51,8 +44,8 @@ setlocale(LC_ALL, "US");
 				</div>
 				<div class="col-md-6">
 					<div class="blog-img">
-						<img style="object-fit: cover; height: 25rem" src="./blog_uploads/<?php echo $blog['blog_img']; ?>"
-							class="img-responsive w-100 shadow rounded" alt="Blog Image" />
+						<img style="object-fit: cover;" src="./blog_uploads/<?php echo $blog['blog_img']; ?>"
+							class="w-100 shadow rounded" alt="Blog Image" />
 					</div>
 				</div>
 			</div>
@@ -145,6 +138,20 @@ echo date_format($created_at, $format);
 	</div>
 
 	<script src="./js/sweetalert2.all.min.js"></script>
+	<script>
+	const handleDelete = () => {
+		Swal.fire({
+			icon: 'error',
+			title: 'Are you sure you want to delete this blog',
+			showDenyButton: true,
+			denyButtonText: 'Cancel',
+			showCloseButton: true,
+			confirmButtonText: 'Yes',
+			showLoaderOnConfirm: false,
+		})
+	}
+	console.log(Swal.getActions());
+	</script>
 </body>
 
 </html>

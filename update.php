@@ -54,6 +54,7 @@ if (isset($_GET["id"])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="./css/mdb.min.css" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="./css/style.css" />
 	<title>HeyPresh</title>
 </head>
@@ -65,8 +66,7 @@ if (isset($_GET["id"])) {
 			<div class="col-md-12">
 				<div class="header pt-5">
 					<a href="index.php" class="text-light back-link mt-3">
-						<i class="fas fa-arrow-left ms-2"></i>
-						Go Back</a>
+						<i class="material-icons ms-2">arrow_back_sharp</i></a>
 				</div>
 			</div>
 		</div>

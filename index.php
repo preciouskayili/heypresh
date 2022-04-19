@@ -20,6 +20,7 @@ if (isset($_POST["search-btn"])) {
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="./css/mdb.min.css" />
 	<link rel="stylesheet" href="./css/style.css" />
 
@@ -112,10 +113,9 @@ if (isset($_POST["search-btn"])) {
 		<div class="row">
 			<?php foreach ($allBlogs as $blog): ?>
 			<div class="col-lg-4 mb-4 col-md-6">
-				<div class="card"
+				<div class="card parent"
 					style="border-radius: 0px; background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./blog_uploads/<?php echo $blog["blog_img"] ?>'); background-position: center; background-size: cover">
 					<div class="card-body">
-
 						<div class="profile-img" style="position: relative">
 							<div class="profile-img mb-4" style="float: left;">
 								<a href="author.php?author=<?php echo $blog["author"] ?>">
@@ -135,16 +135,16 @@ if (isset($_POST["search-btn"])) {
 								<?php echo $blog["blog_title"] ?>
 							</h3>
 
-							<div class="card-icons mt-3 mr-2" style="position: relative;">
+							<div class="card-icons mt-3" style="position: relative;">
 								<div class="icons" style="float: left;">
 									<a style="display: <?php if (isset($_COOKIE["username"]) && $blog['author'] == $_COOKIE['username']) {echo 'initial';} else {echo 'none';}?>"
 										href="./update.php?id=<?php echo $blog['id']; ?>" class="text-light">
-										<i class="fa fa-edit"></i>
+										<i class="material-icons">edit</i>
 									</a>
 									<textarea class="d-none" id="blogId<?php echo $blog['id']; ?>"></textarea>
-									<button class="btn btn-md p-0 shadow-none text-light" onclick="handleCopy(<?php echo $blog['id']; ?>)"
-										title="Copy link to clipboard">
-										<i class="fa fa-paper-plane"></i>
+									<button class="btn btn-md p-0 shadow-none text-light ms-1"
+										onclick="handleCopy(<?php echo $blog['id']; ?>)" title="Copy link to clipboard">
+										<i class="material-icons">content_paste</i>
 									</button>
 								</div>
 								<div class="date" style="float: right;">

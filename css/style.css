@@ -106,29 +106,3 @@ img {
   text-rendering: auto;
   line-height: 1;
 }
-
-.blog-card h3:hover {
-  color: #444;
-}
-
-.blog-link h4:hover {
-  color: #444;
-}
-
-.fa-search:before {
-  content: "\f002";
-}
-
-.fa-bars:before {
-  content: "\f0c9";
-}
-
-.fa-edit:before {
-  content: "\f044";
-  font-size: 20px;
-}
-
-.fa-paper-plane:before {
-  content: "\f1d8";
-  font-size: 20px;
-}

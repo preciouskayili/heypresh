@@ -47,6 +47,7 @@ if (isset($_POST['post_it'])) {
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="./css/mdb.min.css" />
 	<link rel="stylesheet" href="./css/style.css" />
 	<title>HeyPresh</title>
@@ -58,10 +59,9 @@ if (isset($_POST['post_it'])) {
 
 		<div class="container d-block mx-auto">
 			<div class="col-md-12">
-				<div class="header pt-3">
+				<div class="header pt-5">
 					<a href="index.php" class="back-link text-light mt-3">
-						<i class="fas fa-arrow-left ms-2"></i>
-						Go Back</a>
+						<i class="material-icons">arrow_back_sharp</i></a>
 				</div>
 			</div>
 		</div>
